@@ -6,6 +6,7 @@ public class SweepstakeService: ISweepstakeService
 {
     private static readonly List<Horse> AllHorses = new List<Horse>
     {
+        //test data
         // Assuming these are the horses. Replace with real data.
         new Horse { Name = "Horse 1" },
         new Horse { Name = "Horse 2" },
@@ -54,6 +55,19 @@ public class SweepstakeService: ISweepstakeService
     public List<Horse> GetHorses()
     {
         return AllHorses;
+    }
+    
+    //check if horse is already assigned to a person
+    public bool IsHorseAssigned(Horse horse, List<Person> people)
+    {
+        foreach(var p in people)
+        {
+            if(p.Horses.Contains(horse))
+            {
+                return true;
+            }
+        }
+        return false;
     }
     
     
