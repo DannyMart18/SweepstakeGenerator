@@ -43,7 +43,11 @@ public class SweepstakeController : ControllerBase
                 _logger.LogError("Not enough horses for everyone");
                 return BadRequest("Not enough horses for everyone");
 
-            }
+            }/*else if(totalPersonHorses < numHorses)
+            {
+                _logger.LogError("Not all horses have been assigned to a person");
+                return BadRequest("Not all horses have been assigned to a person");
+            }*/
         }
 
         try
