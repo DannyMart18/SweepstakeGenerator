@@ -67,6 +67,22 @@ public class SweepstakeController : ControllerBase
 
         
     }
+    
+    [HttpGet]
+    public ActionResult GetHorses()
+    {
+        try
+        {
+            var horses = _sweepstakeService.GetHorses();
+            _logger.LogInformation("Horses retrieved successfully");
+            return Ok(horses);
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error retrieving horses");
+            return BadRequest(ex.Message);
+        }
+    }
 
     
 }
