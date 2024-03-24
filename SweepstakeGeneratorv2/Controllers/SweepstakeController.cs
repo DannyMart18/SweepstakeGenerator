@@ -21,47 +21,52 @@ public class SweepstakeController : ControllerBase
     public ActionResult GenerateSweepstake([FromBody] List<Person> persons)
     {
         int numHorses = _sweepstakeService.GetHorses().Count;
-        
-        if(persons == null || persons.Count == 0)
+    
+        if (persons == null || persons.Count == 0)
         {
             _logger.LogError("No people to generate sweepstake for");
             return BadRequest("No people to generate sweepstake for");
         }
 
         int totalPersonHorses = 0;
-        //check if the number of horses in request per person exceeds the number of horses available
-        foreach(var p in persons)
+        // Check if the number of horses in request per person exceeds the number of horses available
+        foreach (var p in persons)
         {
             totalPersonHorses += p.NumHorses;
-            if(p.NumHorses > numHorses)
+            if (p.NumHorses > numHorses)
             {
                 _logger.LogError("Not enough horses for everyone");
                 return BadRequest("Not enough horses for everyone");
             }
-            else if(totalPersonHorses > numHorses)
-            {
-                _logger.LogError("Not enough horses for everyone");
-                return BadRequest("Not enough horses for everyone");
-
-            }/*else if(totalPersonHorses < numHorses)
-            {
-                _logger.LogError("Not all horses have been assigned to a person");
-                return BadRequest("Not all horses have been assigned to a person");
-            }*/
         }
 
-        try
+        if (totalPersonHorses > numHorses)
         {
-            var result = _sweepstakeService.GenerateSweepstake(persons);
-            _logger.LogInformation("Sweepstake generated successfully");
-            return Ok(result);
+            _logger.LogError("Not enough horses for everyone");
+            return BadRequest("Not enough horses for everyone");
         }
-        catch(Exception ex)
+        else if (totalPersonHorses < numHorses)
         {
-            _logger.LogError(ex, "Error generating sweepstake");
-            return BadRequest(ex.Message);
+            _logger.LogError("Not all horses have been assigned to a person");
+            return BadRequest("Not all horses have been assigned to a person");
         }
+        else
+        {
+            try
+            {
+                var result = _sweepstakeService.GenerateSweepstake(persons);
+                _logger.LogInformation("Sweepstake generated successfully");
+                return Ok(result);
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error generating sweepstake");
+                return BadRequest(ex.Message);
+            }
+        }
+
         
     }
+
     
 }
