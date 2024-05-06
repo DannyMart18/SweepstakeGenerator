@@ -4,7 +4,7 @@ namespace SweepstakeGeneratorv2.Services;
 
 public class SweepstakeService: ISweepstakeService
 {
-    private static readonly List<Horse> AllHorses = new List<Horse>
+    public static  List<Horse> AllHorses = new List<Horse>
     {
         new Horse { Name = "1 Noble Yeats" },
         new Horse { Name = "2 Nassalam" },
